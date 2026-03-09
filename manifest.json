@@ -1,0 +1,17 @@
+{
+    "domain": "ubisys_poc",
+    "name": "Ubisys PoC",
+    "version": "0.1.0",
+    "config_flow": true,
+    "integration_type": "hub",
+    "iot_class": "local_polling",
+    "dependencies": [
+        "zha"
+    ],
+    "codeowners": [
+    "@tomasbedrich"
+  ],
+    "requirements": [],
+    "documentation": "https://www.home-assistant.io/integrations/ubisys_poc",
+  "quality_scale": "bronze"
+}

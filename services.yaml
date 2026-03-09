@@ -1,0 +1,284 @@
+read_input_configurations:
+  name: Read input configurations
+  description: Read the InputConfigurations attribute (0x0000) from a ubisys device's setup cluster. Returns one entry per physical input.
+  fields:
+    device_id:
+      name: Device
+      description: The ubisys ZHA device to read from.
+      required: true
+      selector:
+        device:
+          filter:
+            - integration: zha
+              manufacturer: ubisys
+
+read_input_actions:
+  name: Read input actions
+  description: Read the InputActions attribute (0x0001) from a ubisys device's setup cluster. Each entry maps a physical input transition to a ZCL command.
+  fields:
+    device_id:
+      name: Device
+      description: The ubisys ZHA device to read from.
+      required: true
+      selector:
+        device:
+          filter:
+            - integration: zha
+              manufacturer: ubisys
+
+read_output_configurations:
+  name: Read output configurations
+  description: Read the OutputConfigurations attribute (0x0010) from an LD6 device's setup cluster. Returns one entry per output channel. Only supported on LD6 devices.
+  fields:
+    device_id:
+      name: Device
+      description: The ubisys ZHA device to read from.  Only supported on LD6 devices.
+      required: true
+      selector:
+        device:
+          filter:
+            - integration: zha
+              manufacturer: ubisys
+
+read_raw_input_configurations:
+  name: Read raw input configurations
+  description: Read the InputConfigurations attribute (0x0000) as raw bytes. Returns one hex byte string per physical input.
+  fields:
+    device_id:
+      name: Device
+      description: The ubisys ZHA device to read from.
+      required: true
+      selector:
+        device:
+          filter:
+            - integration: zha
+              manufacturer: ubisys
+
+read_raw_input_actions:
+  name: Read raw input actions
+  description: Read the InputActions attribute (0x0001) as raw bytes. Returns one hex byte string per action entry.
+  fields:
+    device_id:
+      name: Device
+      description: The ubisys ZHA device to read from.
+      required: true
+      selector:
+        device:
+          filter:
+            - integration: zha
+              manufacturer: ubisys
+
+read_raw_output_configurations:
+  name: Read raw output configurations
+  description: Read the OutputConfigurations attribute (0x0010) as raw bytes. Returns one hex byte string per output channel. Only supported on LD6 devices.
+  fields:
+    device_id:
+      name: Device
+      description: The ubisys ZHA device to read from.  Only LD6 devices.
+      required: true
+      selector:
+        device:
+          filter:
+            - integration: zha
+              manufacturer: ubisys
+
+write_input_configurations:
+  name: Write input configurations
+  description: Write the InputConfigurations attribute (0x0000) to a ubisys device's setup cluster. Each entry corresponds to one physical input. Pass the list returned by read_input_configurations (optionally edited).
+  fields:
+    device_id:
+      name: Device
+      description: The ubisys ZHA device to write to.
+      required: true
+      selector:
+        device:
+          filter:
+            - integration: zha
+              manufacturer: ubisys
+    input_configurations:
+      name: Input configurations
+      description: "List of input configuration entries. Each entry is a dict with optional keys: disabled (bool, default false) and inverted (bool, default false)."
+      required: true
+      selector:
+        object:
+
+write_input_actions:
+  name: Write input actions
+  description: Write the InputActions attribute (0x0001) to a ubisys device's setup cluster. Each entry maps a physical input transition to a ZCL command. Pass the list returned by read_input_actions (optionally edited).
+  fields:
+    device_id:
+      name: Device
+      description: The ubisys ZHA device to write to.
+      required: true
+      selector:
+        device:
+          filter:
+            - integration: zha
+              manufacturer: ubisys
+    input_actions:
+      name: Input actions
+      description: "List of input action entries. Each entry requires: input_index (int), initial_state (str), final_state (str), source_endpoint (int), cluster_id (int). Optional: manufacturer_specific, has_alternate, is_alternate (bool), command_template (list of ints)."
+      required: true
+      selector:
+        object:
+
+write_output_configurations:
+  name: Write output configurations
+  description: Write the OutputConfigurations attribute (0x0010) to an LD6 device's setup cluster. Only supported on LD6 devices. Pass the list returned by read_output_configurations (optionally edited).
+  fields:
+    device_id:
+      name: Device
+      description: The ubisys ZHA device to write to. Only supported on LD6 devices.
+      required: true
+      selector:
+        device:
+          filter:
+            - integration: zha
+              manufacturer: ubisys
+    output_configurations:
+      name: Output configurations
+      description: "List of output channel entries. Each entry requires: endpoint (int), function (str, e.g. MONO/RED/GREEN/BLUE), raw_flux (int 0-255), raw_cie_x (int), raw_cie_y (int). Optional: channel_index (int, ignored on write)."
+      required: true
+      selector:
+        object:
+
+write_raw_input_configurations:
+  name: Write raw input configurations
+  description: Write the InputConfigurations attribute (0x0000) from raw hex byte strings. Pass the list returned by read_raw_input_configurations unchanged, or edit individual values (e.g. "00", "40", "80").
+  fields:
+    device_id:
+      name: Device
+      description: The ubisys ZHA device to write to.
+      required: true
+      selector:
+        device:
+          filter:
+            - integration: zha
+              manufacturer: ubisys
+    input_configurations:
+      name: Input configurations (raw)
+      description: "List of hex byte strings, one per physical input. Each value is a single byte in hex: 00 for normal, 40 for inverted (active-low), 80 for disabled. Pass the list returned by read_raw_input_configurations unchanged to perform a no-op write."
+      required: true
+      selector:
+        object:
+
+write_raw_input_actions:
+  name: Write raw input actions
+  description: Write the InputActions attribute (0x0001) from raw hex byte strings. Pass the list returned by read_raw_input_actions unchanged, or edit individual entries.
+  fields:
+    device_id:
+      name: Device
+      description: The ubisys ZHA device to write to.
+      required: true
+      selector:
+        device:
+          filter:
+            - integration: zha
+              manufacturer: ubisys
+    input_actions:
+      name: Input actions (raw)
+      description: List of space-separated hex byte strings, one per action entry (for example 00 0d 01 06 00 02). Pass the list returned by read_raw_input_actions unchanged to perform a no-op write.
+      required: true
+      selector:
+        object:
+
+write_raw_output_configurations:
+  name: Write raw output configurations
+  description: Write the OutputConfigurations attribute (0x0010) from raw hex byte strings. Only supported on LD6 devices. Pass the list returned by read_raw_output_configurations unchanged, or edit individual channel entries.
+  fields:
+    device_id:
+      name: Device
+      description: The ubisys ZHA device to write to. Only LD6 devices.
+      required: true
+      selector:
+        device:
+          filter:
+            - integration: zha
+              manufacturer: ubisys
+    output_configurations:
+      name: Output configurations (raw)
+      description: List of space-separated hex byte strings, one per output channel (6 bytes each). Pass the list returned by read_raw_output_configurations unchanged to perform a no-op write.
+      required: true
+      selector:
+        object:
+
+write_input_actions_preset:
+  name: Write input actions preset
+  description: >-
+    Write the InputActions attribute (0x0001) using named preset patterns.
+    Each entry in presets configures one physical input. All entries are
+    combined and written as a single replacement of the full InputActions
+    attribute, equivalent to calling write_input_actions with a hand-crafted
+    list. source_endpoint is optional for known device models (S1, S1-R, S2,
+    S2-R, D1, D1-R, J1, J1-R, C4): it is derived automatically from the
+    device model and input_index, using the same defaults as Zigbee2MQTT.
+    Override it only when the default does not match your binding setup.
+    For C4 with cover presets, the cover endpoint range (5-8) is applied
+    automatically.
+  fields:
+    device_id:
+      name: Device
+      description: The ubisys ZHA device to write to.
+      required: true
+      selector:
+        device:
+          filter:
+            - integration: zha
+              manufacturer: ubisys
+    presets:
+      name: Presets
+      description: >-
+        One entry per physical input. Each entry binds a named preset to an
+        input index. source_endpoint is auto-assigned for most devices and
+        can be omitted; it is required only for LD6 or when overriding the
+        default binding. scene_id is required only for the scene and
+        scene_switch presets.
+      required: true
+      selector:
+        object:
+          multiple: true
+          label_field: preset
+          description_field: input_index
+          fields:
+            input_index:
+              label: Input index
+              required: true
+              selector:
+                number:
+                  min: 0
+                  max: 3
+                  mode: box
+            preset:
+              label: Preset
+              required: true
+              selector:
+                select:
+                  mode: dropdown
+                  options:
+                    - "toggle"
+                    - "toggle_switch"
+                    - "on_off_switch"
+                    - "on"
+                    - "off"
+                    - "dimmer_single"
+                    - "dimmer_double"
+                    - "cover"
+                    - "cover_switch"
+                    - "cover_up"
+                    - "cover_down"
+                    - "scene"
+                    - "scene_switch"
+            source_endpoint:
+              label: Source endpoint (optional)
+              selector:
+                number:
+                  min: 1
+                  max: 254
+                  mode: box
+            scene_id:
+              label: Scene ID
+              selector:
+                number:
+                  min: 0
+                  max: 255
+                  mode: box

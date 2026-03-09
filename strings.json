@@ -1,0 +1,46 @@
+{
+    "config": {
+        "step": {
+            "user": {
+                "title": "Ubisys PoC",
+                "description": "Set up the Ubisys PoC integration. Sensors will be created for all Ubisys devices already managed by ZHA."
+            }
+        },
+        "abort": {
+            "single_instance_allowed": "Already configured. Only one instance is allowed."
+        }
+    },
+    "exceptions": {
+        "device_not_found": {
+            "message": "Device not found. Make sure the device ID is correct."
+        },
+        "not_a_zha_device": {
+            "message": "The selected device is not managed by ZHA."
+        },
+        "zha_not_available": {
+            "message": "ZHA integration is not available. Make sure ZHA is set up and running."
+        },
+        "no_setup_cluster": {
+            "message": "The selected device does not expose a ubisys setup cluster. Make sure it is a supported ubisys device."
+        },
+        "no_input_configurations": {
+            "message": "This device does not have input configurations."
+        },
+        "no_output_configurations": {
+            "message": "This device does not have output configurations."
+        }
+    },
+    "entity": {
+        "sensor": {
+            "input_configuration": {
+                "name": "Input configuration"
+            },
+            "input_actions": {
+                "name": "Input actions"
+            },
+            "output_channels": {
+                "name": "Output channels"
+            }
+        }
+    }
+}
